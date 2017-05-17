@@ -63,39 +63,78 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
-/* 0 */
+/* 0 */,
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _mortgage = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./mortgage\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var rates = [{
+  'name': '30 years fixed',
+  'rate': '13',
+  'years': '30'
 
-var mortgage = _interopRequireWildcard(_mortgage);
+}, {
+  'name': '20 years fixed',
+  'rate': '2.8',
+  'years': '20'
+
+}];
+
+var findAll = exports.findAll = function findAll() {
+  return new Promise(function (resolve, reject) {
+    if (rates) {
+      resolve(rates);
+    } else {
+      reject("No rates");
+    }
+  });
+};
+
+/***/ }),
+/* 2 */,
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _rateServiceMocks = __webpack_require__(1);
+
+var service = _interopRequireWildcard(_rateServiceMocks);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-document.getElementById('calcBtn').addEventListener('click', function () {
-    var principal = document.getElementById("principal").value;
-    var years = document.getElementById("years").value;
-    var rate = document.getElementById("rate").value;
+fetch(url).then(function (response) {
+  return response.json();
+}).then(function (rates) {
+  var html = '';
+  rates.forEach(function (rate) {
+    return html += '<t><tr><td>${rate.name}</td><td>${rate.years}</td><td>${rate.rate}%</td></tr>';
+  });
+  document.getElementById("rates").innerHTML = html;
+}).catch(function (e) {
+  return console.log('error:', e);
+});
 
-    var _mortgage$calculateAm = mortgage.calculateAmortization(principal, years, rate),
-        monthlyPayment = _mortgage$calculateAm.monthlyPayment,
-        monthlyRate = _mortgage$calculateAm.monthlyRate,
-        amortization = _mortgage$calculateAm.amortization;
-
-    document.getElementById("monthlyPayment").innerHTML = monthlyPayment.toFixed(2);
-    document.getElementById("monthlyRate").innerHTML = (monthlyRate * 100).toFixed(2);
-    amortization.forEach(function (month) {
-        return console.log(month);
-    });
+service.findAll().then(function (rates) {
+  var html = '';
+  rates.forEach(function (rate) {
+    return html += '<tr><td>' + rate.name + '</td><td>' + rate.years + '</td><td>' + rate.rate + '%</td></tr>';
+  });
+  document.getElementById("rates").innerHTML = html;
+}).catch(function (e) {
+  return console.log(e);
 });
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=main.bundle.js.map
+//# sourceMappingURL=ratefinder.bundle.js.map
